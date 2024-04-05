@@ -7,7 +7,8 @@ def new_client(client, server):
     server.send_message_to_all("Hey all, a new client has joined us")
 
 def message_received(client, server, message):
-
+    print("Received message from client {}: {}".format(client['id'], message))
+    # Gjør ønsket behandling av den mottatte meldingen her
     if message == "CHARGING_PLATE_ON":
         print ("plate is on")
         
