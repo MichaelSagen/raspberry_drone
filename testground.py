@@ -9,13 +9,13 @@ import ADS1x15
 # ADS = ADS1x15.ADS1113(1, 0x48)
 # ADS = ADS1x15.ADS1114(1, 0x48)
 
-ADS = ADS1x15.ADS1115(1, 0x38)
+ADS = ADS1x15.ADS1115(1, 0x48)
 
 print(os.path.basename(__file__))
 print("ADS1X15_LIB_VERSION: {}".format(ADS1x15.__version__))
 
 # set gain to 4.096V max
-ADS.setGain(ADS.PGA_4_096V)
+ADS.setGain(ADS.PGA_0_256V)
 print("Voltage")
 
 while True :
