@@ -16,11 +16,11 @@ def message_received(client, server, message):
         server.send_message_to_all("ras_say_the_plate_is_off")
         print ("plate is off")
 
-
-
-
-
-server = WebsocketServer(host='192.168.1.169', port=8765, loglevel=logging.INFO)
-server.set_fn_new_client(new_client)
-server.set_fn_message_received(message_received)
-server.run_forever()
+while True:
+    try:
+        server = WebsocketServer(host='192.168.1.169', port=8765, loglevel=logging.INFO)
+        server.set_fn_new_client(new_client)
+        server.set_fn_message_received(message_received)
+        server.run_forever()
+    except KeyboardInterrupt:
+        break
