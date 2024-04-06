@@ -67,3 +67,4 @@ while True:
 
         print("ADC 0:", adc0)
         print("ADC 1:", adc1)
+        time.sleep(0.5)
