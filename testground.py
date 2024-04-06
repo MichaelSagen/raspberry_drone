@@ -11,11 +11,11 @@ def blink_pins():
     GPIO.output(3, GPIO.HIGH)  # Slå på pinne 3
     GPIO.output(5, GPIO.HIGH)  # Slå på pinne 5
     print ("blink på")
-    time.sleep(1)  # Vent i ett sekund
+    time.sleep(0.1)  # Vent i ett sekund
     GPIO.output(3, GPIO.LOW)  # Slå av pinne 3
     GPIO.output(5, GPIO.LOW)  # Slå av pinne 5
     print ("blink av")
-    time.sleep(1)  # Vent i ett sekund
+    time.sleep(0.1)  # Vent i ett sekund
 # Kjør blink-funksjonen i en løkke for å fortsette å blinke pinsene
 while True:
     blink_pins()
