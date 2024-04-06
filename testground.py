@@ -24,7 +24,7 @@ import ADS1x15
 # ADS = ADS1x15.ADS1113(1, 0x48)
 # ADS = ADS1x15.ADS1114(1, 0x48)
 
-ADS = ADS1x15.ADS1115(1, 0x48)
+ADS = ADS1x15.ADS1115(1, 0xc8)
 
 print(os.path.basename(__file__))
 print("ADS1X15_LIB_VERSION: {}".format(ADS1x15.__version__))
