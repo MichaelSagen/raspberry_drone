@@ -24,3 +24,4 @@ while True:
         server.run_forever()
     except KeyboardInterrupt:
         server.server_close()
+        break
