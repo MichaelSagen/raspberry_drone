@@ -1,44 +1,45 @@
-#!/usr/bin/env python
-import time
-
-from ads1015 import ADS1015
-
-CHANNELS = ["in0/ref", "in1/ref", "in2/ref"]
-
-print(
-    """read-all.py - read all three inputs of the ADC
-
-Press Ctrl+C to exit!
 """
-)
+FILE    : ADS_read.py
+AUTHOR  : Chandra.Wijaya
+VERSION : 1.2.0
+PURPOSE : read analog input
 
-ads1015 = ADS1015()
-chip_type = ads1015.detect_chip_type()
+test
+connect 1 potmeter 
 
-print("Found: {}".format(chip_type))
+GND ---[   x   ]------ 3.3V
+           |
 
-ads1015.set_mode("single")
-ads1015.set_programmable_gain(2.048)
+measure at x (connect to AIN0).
+"""
 
-if chip_type == "ADS1015":
-    ads1015.set_sample_rate(1600)
-else:
-    ads1015.set_sample_rate(860)
+import os
+import time
+import ADS1x15
 
-reference = ads1015.get_reference_voltage()
+# choose your sensor
+# ADS = ADS1x15.ADS1013(1, 0x48)
+# ADS = ADS1x15.ADS1014(1, 0x48)
+# ADS = ADS1x15.ADS1015(1, 0x48)
+# ADS = ADS1x15.ADS1113(1, 0x48)
+# ADS = ADS1x15.ADS1114(1, 0x48)
 
-print("Reference voltage: {:6.3f}v \n".format(reference))
+ADS = ADS1x15.ADS1115(1, 0x48)
 
-try:
-    while True:
-        for channel in CHANNELS:
-            value = ads1015.get_compensated_voltage(
-                channel=channel, reference_voltage=reference
-            )
-            print("{}: {:6.3f}v".format(channel, value))
+print(os.path.basename(__file__))
+print("ADS1X15_LIB_VERSION: {}".format(ADS1x15.__version__))
 
-        print("")
-        time.sleep(0.5)
+# set gain to 4.096V max
+ADS.setGain(ADS.PGA_4_096V)
+f = ADS.toVoltage()
 
-except KeyboardInterrupt:
-    pass
+while True :
+    val_0 = ADS.readADC(0)
+    val_1 = ADS.readADC(1)
+    val_2 = ADS.readADC(2)
+    val_3 = ADS.readADC(3)
+    print("Analog0: {0:d}\t{1:.3f} V".format(val_0, val_0 * f))
+    print("Analog1: {0:d}\t{1:.3f} V".format(val_1, val_1 * f))
+    print("Analog2: {0:d}\t{1:.3f} V".format(val_2, val_2 * f))
+    print("Analog3: {0:d}\t{1:.3f} V".format(val_3, val_3 * f))
+    time.sleep(1)
