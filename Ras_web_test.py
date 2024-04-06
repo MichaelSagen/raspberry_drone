@@ -23,4 +23,4 @@ while True:
         server.set_fn_message_received(message_received)
         server.run_forever()
     except KeyboardInterrupt:
-        break
+        server.server_close()
