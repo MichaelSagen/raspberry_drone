@@ -1,48 +1,44 @@
-import smbus
+#!/usr/bin/env python
 import time
 
-# Define I2C address for ADS1015 (default address)
-ADS1015_ADDRESS = 0x48
+from ads1015 import ADS1015
 
-# Create a new SMBus object
-bus = smbus.SMBus(1)  # 1 indicates /dev/i2c-1, for RPi 3
+CHANNELS = ["in0/ref", "in1/ref", "in2/ref"]
 
-def read_adc_single_ended(channel):
-    # Configuring register settings for single-ended measurement
-    config = 0
-    config |= 0b01000000  # Start single-ended conversion
-    config |= (channel & 0x03) << 12  # Select channel
-    config |= 0b11100000  # +/- 6.144V range
-    config |= 0b00000000  # Continuous conversion mode
+print(
+    """read-all.py - read all three inputs of the ADC
 
-    # Write configuration to the ADC
-    bus.write_i2c_block_data(ADS1015_ADDRESS, 0x01, [(config >> 8) & 0xFF, config & 0xFF])
+Press Ctrl+C to exit!
+"""
+)
 
-    # Wait for conversion to complete (about 0.2 seconds for a single conversion)
-    time.sleep(0.2)
+ads1015 = ADS1015()
+chip_type = ads1015.detect_chip_type()
 
-    # Read the conversion result (16 bits, big-endian)
-    data = bus.read_i2c_block_data(ADS1015_ADDRESS, 0x00, 2)
-    result = (data[0] << 8) | data[1]
+print("Found: {}".format(chip_type))
 
-    # Convert result to signed 16-bit integer
-    if result > 0x7FFF:
-        result -= 0xFFFF
+ads1015.set_mode("single")
+ads1015.set_programmable_gain(2.048)
 
-    return result
+if chip_type == "ADS1015":
+    ads1015.set_sample_rate(1600)
+else:
+    ads1015.set_sample_rate(860)
 
-# Main loop for reading ADC values
-while True:
-    # Read ADC values from channel 0 and channel 1
-    adc0 = read_adc_single_ended(0)
-    adc1 = read_adc_single_ended(1)
-    adc2 = read_adc_single_ended(2)
-    adc3 = read_adc_single_ended(3)
-    # Print ADC values
-    print("ADC 0:", adc0)
-    print("ADC 1:", adc1)
-    print("ADC 2:", adc2)
-    print("ADC 3:", adc3)
+reference = ads1015.get_reference_voltage()
 
-    # Wait before next reading
-    time.sleep(1)
+print("Reference voltage: {:6.3f}v \n".format(reference))
+
+try:
+    while True:
+        for channel in CHANNELS:
+            value = ads1015.get_compensated_voltage(
+                channel=channel, reference_voltage=reference
+            )
+            print("{}: {:6.3f}v".format(channel, value))
+
+        print("")
+        time.sleep(0.5)
+
+except KeyboardInterrupt:
+    pass
