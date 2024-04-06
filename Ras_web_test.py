@@ -3,7 +3,7 @@ import logging
 from websocket_server import WebsocketServer
 import smbus
 import time
-
+import threading
 
 
 def new_client(client, server):
@@ -49,12 +49,17 @@ def read_adc_single_ended(channel):
         result -= 0xFFFF
 
     return result
-server = WebsocketServer(host='192.168.1.169', port=8765, loglevel=logging.INFO)
-server.set_fn_new_client(new_client)
-server.set_fn_message_received(message_received)
-print("in try")
+
+def server():
+    server = WebsocketServer(host='192.168.1.169', port=8765, loglevel=logging.INFO)
+    server.set_fn_new_client(new_client)
+    server.set_fn_message_received(message_received)
+    print("in try")
+    server.run_forever()
 
 
+server_thread = threading.Thread(target=server)
+server_thread.start()
 
 while True:
         adc0 = read_adc_single_ended(0)
@@ -62,9 +67,3 @@ while True:
 
         print("ADC 0:", adc0)
         print("ADC 1:", adc1)
-        try:
-
-            server.run_forever()
-        except KeyboardInterrupt:
-            server.server_close()
-            break
