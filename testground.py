@@ -1,16 +1,45 @@
-import smbus
+"""
+FILE    : ADS_read.py
+AUTHOR  : Chandra.Wijaya
+VERSION : 1.2.0
+PURPOSE : read analog input
 
-# Opprett en SMBus-objekt for I2C-kommunikasjon (velg riktig I2C-bussnummer)
-bus = smbus.SMBus(1)  # For Raspberry Pi 3 og 4, bruk 1. For eldre modeller, kan det være 0.
+test
+connect 1 potmeter 
 
-def scan_i2c_devices():
-    print("Skanne etter tilkoblede I2C-enheter...")
-    for device in range(128):  # Går gjennom alle mulige I2C-adresser (0x00 til 0x7F)
-        try:
-            bus.read_byte(device)
-            print("Enhet funnet på adresse: 0x{:02X}".format(device))
-        except IOError:
-            pass
+GND ---[   x   ]------ 3.3V
+           |
 
-# Skann etter I2C-enheter
-scan_i2c_devices()
+measure at x (connect to AIN0).
+"""
+
+import os
+import time
+import ADS1x15
+
+# choose your sensor
+# ADS = ADS1x15.ADS1013(1, 0x48)
+# ADS = ADS1x15.ADS1014(1, 0x48)
+# ADS = ADS1x15.ADS1015(1, 0x48)
+# ADS = ADS1x15.ADS1113(1, 0x48)
+# ADS = ADS1x15.ADS1114(1, 0x48)
+
+ADS = ADS1x15.ADS1115(1, 0x48)
+
+print(os.path.basename(__file__))
+print("ADS1X15_LIB_VERSION: {}".format(ADS1x15.__version__))
+
+# set gain to 4.096V max
+ADS.setGain(ADS.PGA_4_096V)
+f = ADS.toVoltage()
+
+while True :
+    val_0 = ADS.readADC(0)
+    val_1 = ADS.readADC(1)
+    val_2 = ADS.readADC(2)
+    val_3 = ADS.readADC(3)
+    print("Analog0: {0:d}\t{1:.3f} V".format(val_0, val_0 * f))
+    print("Analog1: {0:d}\t{1:.3f} V".format(val_1, val_1 * f))
+    print("Analog2: {0:d}\t{1:.3f} V".format(val_2, val_2 * f))
+    print("Analog3: {0:d}\t{1:.3f} V".format(val_3, val_3 * f))
+    time.sleep(1)
