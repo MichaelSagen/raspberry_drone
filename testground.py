@@ -3,6 +3,7 @@ FILE    : ADS_read.py
 AUTHOR  : Chandra.Wijaya
 VERSION : 1.2.0
 PURPOSE : read analog input
+https://github.com/chandrawi/ADS1x15-ADC/blob/main/examples/ADS_read.py
 
 test
 connect 1 potmeter 
@@ -43,3 +44,4 @@ while True :
     print("Analog2: {0:d}\t{1:.3f} V".format(val_2, val_2 * f))
     print("Analog3: {0:d}\t{1:.3f} V".format(val_3, val_3 * f))
     time.sleep(1)
+    print("Analog0:", val_0)
