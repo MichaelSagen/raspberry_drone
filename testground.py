@@ -33,7 +33,7 @@ print("ADS1X15_LIB_VERSION: {}".format(ADS1x15.__version__))
 # set gain to 4.096V max
 ADS.setGain(ADS.PGA_4_096V)
 f = ADS.toVoltage()
-ads_to_voltage = 0.000619
+ads_to_voltage = 0.000621
 
 while True :
     val_0 = ADS.readADC(0)
