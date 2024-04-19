@@ -45,4 +45,4 @@ while True :
     print("Analog2: {0:d}\t{1:.3f} V".format(val_2, val_2 * f))
     print("Analog3: {0:d}\t{1:.3f} V".format(val_3, val_3 * f))
     time.sleep(1)
-    print("Analog0:", val_0*0.00061)
+    print("Analog0:", val_0*0.00056)
