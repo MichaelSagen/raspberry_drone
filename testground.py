@@ -34,6 +34,7 @@ print("ADS1X15_LIB_VERSION: {}".format(ADS1x15.__version__))
 ADS.setGain(ADS.PGA_4_096V)
 f = ADS.toVoltage()
 
+
 while True :
     val_0 = ADS.readADC(0)
     val_1 = ADS.readADC(1)
@@ -44,4 +45,4 @@ while True :
     print("Analog2: {0:d}\t{1:.3f} V".format(val_2, val_2 * f))
     print("Analog3: {0:d}\t{1:.3f} V".format(val_3, val_3 * f))
     time.sleep(1)
-    print("Analog0:", val_0)
+    print("Analog0:", val_0*0.00061)
