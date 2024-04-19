@@ -45,3 +45,5 @@ while True :
     print("Analog1:", round(val_1*ads_to_voltage, 2),"V")
     print("Analog2:", round(val_2*ads_to_voltage, 2),"V")
     print("Analog3:", round(val_3*ads_to_voltage, 2),"V")
+    print("...................................")
+    print("...................................")
