@@ -40,7 +40,7 @@ while True :
     val_1 = ADS.readADC(1)
     val_2 = ADS.readADC(2)
     val_3 = ADS.readADC(3)
-    time.sleep(1)
+    time.sleep(4)
     print("Analog0:", round(val_0*ads_to_voltage, 2),"V")
     print("Analog1:", round(val_1*ads_to_voltage, 2),"V")
     print("Analog2:", round(val_2*ads_to_voltage, 2),"V")
